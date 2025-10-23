@@ -29,9 +29,8 @@ Given an integer n, return a counter function. This counter function initially r
  * @return {Function} counter
  */
 var createCounter = function(n) {
-    var num=n;
     return function() {
-        return num++;
+        return n++;
     };
 };
 
@@ -41,7 +40,7 @@ var createCounter = function(n) {
  * counter() // 11
  * counter() // 12
  */
- ```
+```
 
 ### 2704. To Be Or Not To Be
 
