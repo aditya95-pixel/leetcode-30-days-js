@@ -223,3 +223,21 @@ var compose = function(functions) {
  * fn(4) // 9
  */
  ```
+
+### 2703. Return Length of Arguments Passed
+
+Write a function argumentsLength that returns the count of arguments passed to it.
+
+```js
+/**
+ * @param {...(null|boolean|number|string|Array|Object)} args
+ * @return {number}
+ */
+var argumentsLength = function(...args) {
+    return args.length;
+};
+
+/**
+ * argumentsLength(1, 2, 3); // 3
+ */
+ ```
