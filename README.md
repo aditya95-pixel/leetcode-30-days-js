@@ -870,3 +870,187 @@ var compactObject = function(obj) {
     }
 };
 ```
+
+### 2694. Event Emitter
+
+Design an EventEmitter class. This interface is similar (but with some differences) to the one found in Node.js or the Event Target interface of the DOM. The EventEmitter should allow for subscribing to events and emitting them.
+
+Your EventEmitter class should have the following two methods:
+
+subscribe - This method takes in two arguments: the name of an event as a string and a callback function. This callback function will later be called when the event is emitted.
+An event should be able to have multiple listeners for the same event. When emitting an event with multiple callbacks, each should be called in the order in which they were subscribed. An array of results should be returned. You can assume no callbacks passed to subscribe are referentially identical.
+The subscribe method should also return an object with an unsubscribe method that enables the user to unsubscribe. When it is called, the callback should be removed from the list of subscriptions and undefined should be returned.
+emit - This method takes in two arguments: the name of an event as a string and an optional array of arguments that will be passed to the callback(s). If there are no callbacks subscribed to the given event, return an empty array. Otherwise, return an array of the results of all callback calls in the order they were subscribed.
+
+```js
+class EventEmitter {
+    events=new Map();
+    /**
+     * @param {string} eventName
+     * @param {Function} callback
+     * @return {Object}
+     */
+    subscribe(eventName, callback) {
+        if(!this.events.has(eventName))
+        this.events.set(eventName,[]);
+        let callbacks=this.events.get(eventName);
+        callbacks.push(callback);
+        return {
+            unsubscribe: () => {
+                let i=callbacks.indexOf(callback);
+                if(i!==-1)
+                callbacks.splice(i,1);
+            }
+        };
+    }
+    
+    /**
+     * @param {string} eventName
+     * @param {Array} args
+     * @return {Array}
+     */
+    emit(eventName, args = []) {
+        let callbacks=this.events.get(eventName);
+        if(!callbacks || callbacks.length===0)
+        return [];
+        return callbacks.map(callback=>{
+            return callback(...args);
+        });
+    }
+}
+
+/**
+ * const emitter = new EventEmitter();
+ *
+ * // Subscribe to the onClick event with onClickCallback
+ * function onClickCallback() { return 99 }
+ * const sub = emitter.subscribe('onClick', onClickCallback);
+ *
+ * emitter.emit('onClick'); // [99]
+ * sub.unsubscribe(); // undefined
+ * emitter.emit('onClick'); // []
+ */
+ ```
+
+### 2695. Array Wrapper
+
+Create a class ArrayWrapper that accepts an array of integers in its constructor. This class should have two features:
+
+When two instances of this class are added together with the + operator, the resulting value is the sum of all the elements in both arrays.
+When the String() function is called on the instance, it will return a comma separated string surrounded by brackets. For example, [1,2,3].
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {void}
+ */
+var ArrayWrapper = function(nums) {
+    this.arr=nums;
+};
+
+/**
+ * @return {number}
+ */
+ArrayWrapper.prototype.valueOf = function() {
+    let sum=0;
+    for(let i=0;i<this.arr.length;i++)
+    sum+=this.arr[i];
+    return sum;
+}
+
+/**
+ * @return {string}
+ */
+ArrayWrapper.prototype.toString = function() {
+    return JSON.stringify(this.arr);
+}
+
+/**
+ * const obj1 = new ArrayWrapper([1,2]);
+ * const obj2 = new ArrayWrapper([3,4]);
+ * obj1 + obj2; // 10
+ * String(obj1); // "[1,2]"
+ * String(obj2); // "[3,4]"
+ */
+ ```
+
+### 2726. Calculator with Method Chaining
+
+Design a Calculator class. The class should provide the mathematical operations of addition, subtraction, multiplication, division, and exponentiation. It should also allow consecutive operations to be performed using method chaining. The Calculator class constructor should accept a number which serves as the initial value of result.
+
+Your Calculator class should have the following methods:
+
+add - This method adds the given number value to the result and returns the updated Calculator.
+subtract - This method subtracts the given number value from the result and returns the updated Calculator.
+multiply - This method multiplies the result  by the given number value and returns the updated Calculator.
+divide - This method divides the result by the given number value and returns the updated Calculator. If the passed value is 0, an error "Division by zero is not allowed" should be thrown.
+power - This method raises the result to the power of the given number value and returns the updated Calculator.
+getResult - This method returns the result.
+Solutions within 10-5 of the actual result are considered correct.
+
+```js
+class Calculator {
+    
+    /** 
+     * @param {number} value
+     */
+    constructor(value) {
+        this.num=value;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    add(value){
+        this.num+=value;
+        return this;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    subtract(value){
+        this.num-=value;
+        return this;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */  
+    multiply(value) {
+        this.num*=value;
+        return this;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    divide(value) {
+        if(value!=0)
+        this.num/=value;
+        else
+        throw new Error("Division by zero is not allowed");
+        return this;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    power(value) {
+        this.num=Math.pow(this.num,value);
+        return this;
+    }
+    
+    /** 
+     * @return {number}
+     */
+    getResult() {
+        return this.num;
+    }
+}
+```
